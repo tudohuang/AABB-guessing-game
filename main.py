@@ -1,5 +1,6 @@
 import random
 import tkinter as tk
+from tkinter import messagebox
 
 def comp(num4, g4):
     A = 0
@@ -14,15 +15,21 @@ def comp(num4, g4):
     win = (A == 4)
 
     if win:
-        result_label.config(text='You win!')
+        messagebox.showinfo('Result', 'You win!')
+        root.destroy()
 
     return win
 
 def check_guess():
     guess = entry.get()
+    if len(guess) != 4 or not guess.isdigit():
+        messagebox.showerror('Error', 'Invalid input! Enter 4-digit number.')
+        entry.delete(0, tk.END)
+        return
     w = comp(num4, guess)
     if not w and attempts.get() >= 10:
-        result_label.config(text='You lose!')
+        messagebox.showinfo('Result', 'You lose!')
+        root.destroy()
     attempts.set(attempts.get() + 1)
     entry.delete(0, tk.END)
 
@@ -33,19 +40,29 @@ num4 = num4[:4]
 root = tk.Tk()
 root.title('Number Guessing Game')
 
-instructions_label = tk.Label(root, text='Enter 4 numbers:')
-instructions_label.pack()
+canvas = tk.Canvas(root, width=300, height=300)
+canvas.pack()
 
-entry = tk.Entry(root, width=10)
-entry.pack()
+background_image = tk.PhotoImage(file='background.png')
+background_label = tk.Label(root, image=background_image)
+background_label.place(relwidth=1, relheight=1)
+
+frame = tk.Frame(root, bg='#ffffff', bd=5)
+frame.place(relx=0.5, rely=0.2, relwidth=0.75, relheight=0.1, anchor='n')
+
+entry = tk.Entry(frame, font=('Arial', 14))
+entry.place(relwidth=0.65, relheight=1)
+
+check_button = tk.Button(frame, text='Check', font=('Arial', 12), command=check_guess)
+check_button.place(relx=0.7, relheight=1, relwidth=0.3)
 
 attempts = tk.IntVar()
 attempts.set(1)
 
-check_button = tk.Button(root, text='Check', command=check_guess)
-check_button.pack()
+attempts_label = tk.Label(root, text='Attempts: 1', font=('Arial', 14), bg='#ffffff')
+attempts_label.place(relx=0.5, rely=0.35, anchor='n')
 
-result_label = tk.Label(root, text='')
-result_label.pack()
+result_label = tk.Label(root, text='', font=('Arial', 16), bg='#ffffff')
+result_label.place(relx=0.5, rely=0.45, anchor='n')
 
 root.mainloop()
