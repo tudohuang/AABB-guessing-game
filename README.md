@@ -1,5 +1,3 @@
-Certainly! Here's an updated version of the README file for the number guessing game with added emoji:
-
 # Number Guessing Game :1234:
 
 This is a simple number guessing game implemented in Python using the Tkinter library. The player's objective is to guess a randomly generated 4-digit number within 10 attempts.
